@@ -15,10 +15,10 @@ public class AppInitializer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Scene splashScene = new Scene(FXMLLoader.load(this.getClass().getResource("/view/SplashScreenForm.fxml")));
-        splashScene.setFill(Color.TRANSPARENT);
-        Stage splashStage = new Stage(StageStyle.TRANSPARENT);
-        //primaryStage.initModality(StageStyle.TRANSPARENT);
+        Scene splashScene = new Scene(FXMLLoader.load(this.getClass().getResource("/view/TextEditorForm.fxml")));
+
+        //Stage splashStage = new Stage(StageStyle.TRANSPARENT);
+
         primaryStage.setScene(splashScene);
         primaryStage.show();
         primaryStage.centerOnScreen();

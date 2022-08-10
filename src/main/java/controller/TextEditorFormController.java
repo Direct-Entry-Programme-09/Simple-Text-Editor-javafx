@@ -4,14 +4,19 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.web.HTMLEditor;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.awt.*;
+import java.io.*;
 import java.net.URL;
 
 public class TextEditorFormController {
@@ -26,6 +31,8 @@ public class TextEditorFormController {
     public MenuItem mnuPaste;
     public MenuItem mnuSelectAll;
     public MenuItem mnuAbout;
+
+    private File file1;
 
     public void initialize() {
         mnuAbout.setOnAction(new EventHandler<ActionEvent>() {
@@ -55,6 +62,82 @@ public class TextEditorFormController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Platform.exit(); // exit from javafx run time env
+            }
+        });
+
+        mnuOpen.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                FileChooser fc = new FileChooser();
+                File file = new File("/home/nipunija/Desktop");
+                fc.setInitialDirectory(file);
+                file1 = fc.showOpenDialog(txtEditor.getScene().getWindow());
+                try {
+                    FileInputStream fis = new FileInputStream(file1);
+                    BufferedInputStream bfis = new BufferedInputStream(fis);
+
+                    char[] chars = new char[(int) file1.length()];
+                    for (int i = 0; i < file1.length(); i++) {
+                        chars[i]= (char) bfis.read();
+                    }
+                    txtEditor.setHtmlText(String.valueOf(chars));
+                    bfis.close();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        });
+
+        mnuSave.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String htmlText = txtEditor.getHtmlText();
+                System.out.println(htmlText);
+                char[] chars = htmlText.toCharArray();
+                byte[] bytes = new byte[chars.length];
+                for (int i = 0; i < bytes.length; i++) {
+                    bytes[i]= (byte) chars[i];
+                }
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(file1);
+                    fos.write(bytes);
+
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        });
+
+        mnuPrint.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (Printer.defaultPrinterProperty()==null){
+                    new Alert(Alert.AlertType.ERROR,"no default printer").show();
+                    return;
+                }
+                PrinterJob printerJob = PrinterJob.createPrinterJob();
+
+                if (printerJob!=null){
+                    printerJob.showPageSetupDialog(txtEditor.getScene().getWindow());
+                    boolean b = printerJob.printPage(txtEditor);
+                    if (b){
+                        printerJob.endJob();
+                    }else {
+                        new Alert(Alert.AlertType.ERROR,"failed to print").show();
+                    }
+
+                }else {
+                    new Alert(Alert.AlertType.ERROR,"didn't create a print job").show();
+                }
+
             }
         });
 
