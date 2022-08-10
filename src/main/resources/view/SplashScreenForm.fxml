@@ -13,7 +13,7 @@
             <Image url="@../image/ball.gif" />
          </image>
       </ImageView>
-      <Label fx:id="lblLoading" alignment="CENTER" layoutX="85.0" layoutY="324.0" prefHeight="29.0" prefWidth="197.0" style="-fx-background-color: black;" text="Label" textFill="#f5f0f0">
+      <Label fx:id="lblLoading" alignment="CENTER" layoutX="85.0" layoutY="324.0" prefHeight="29.0" prefWidth="197.0" style="-fx-background-color: black;" text="Starting the Application" textFill="#f5f0f0">
          <font>
             <Font size="16.0" />
          </font></Label>

@@ -51,7 +51,6 @@ public class TextEditorFormController {
             @Override
             public void changed(ObservableValue<? extends IndexRange> observableValue, IndexRange indexRange, IndexRange t1) {
                 selectedText = txtNote.getText(t1.getStart(), t1.getEnd());
-
             }
         });
         mnuAbout.setOnAction(new EventHandler<ActionEvent>() {
@@ -188,13 +187,25 @@ public class TextEditorFormController {
 
             }
         });
-
         mnuPaste.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println(selectednotchangetext);
                 int start = txtNote.getSelection().getStart();
-                txtNote.replaceText(start,selectednotchangetext.length(),selectednotchangetext);
+                int end = txtNote.getSelection().getEnd();
+                txtNote.replaceText(start,end,selectednotchangetext);
+            }
+        });
+        mnuCut.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                ClipboardContent clipboardContent = new ClipboardContent();
+                clipboardContent.putString(selectedText);
+                scb.setContent(clipboardContent);
+                selectednotchangetext=selectedText;
+                int start1 = txtNote.getSelection().getStart();
+                int end1 = txtNote.getSelection().getEnd();
+                txtNote.replaceText(start1,end1,"");
+
             }
         });
 

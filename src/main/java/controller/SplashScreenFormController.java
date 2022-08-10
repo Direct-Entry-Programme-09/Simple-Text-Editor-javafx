@@ -52,6 +52,7 @@ public class SplashScreenFormController {
                     Scene scene = new Scene(load);
                     Stage stage = new Stage();
                     stage.setScene(scene);
+                    stage.setTitle("NPJ Text Editor");
                     stage.show();
                     lblLoading.getScene().getWindow().hide();
                 } catch (IOException e) {
