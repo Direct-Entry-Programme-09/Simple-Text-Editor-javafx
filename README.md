@@ -1,11 +1,18 @@
-# Dep-9-textEditor
+# NPJ-Text-Editor
 
-A simple java FX text Editor
+A simple java FX text Editor. It can be use to write read and edit any type of text documents.
 
 ### version
 v1.0.0
 
 ### License
-Copyright &copy; DEP9. All Right Reserved.
+Copyright &copy; DEP9. All Right Reserved. [License](LICENSE)
 
-![](asset/img.png)
+### View
+
+![](asset/start1.png)
+
+Menue Bar
+
+![](asset/menue1.png)
+![](asset/menue2.png)
