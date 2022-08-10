@@ -1,6 +1,8 @@
 package controller;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +11,11 @@ import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.IndexRange;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -36,8 +41,19 @@ public class TextEditorFormController {
     public TextArea txtNote;
 
     private File file1;
+    private String selectedText;
 
+    private String selectednotchangetext;
+
+    final Clipboard scb = Clipboard.getSystemClipboard();
     public void initialize() {
+        txtNote.selectionProperty().addListener(new ChangeListener<IndexRange>() {
+            @Override
+            public void changed(ObservableValue<? extends IndexRange> observableValue, IndexRange indexRange, IndexRange t1) {
+                selectedText = txtNote.getText(t1.getStart(), t1.getEnd());
+
+            }
+        });
         mnuAbout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -67,7 +83,6 @@ public class TextEditorFormController {
                 Platform.exit(); // exit from javafx run time env
             }
         });
-
         mnuOpen.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -102,10 +117,10 @@ public class TextEditorFormController {
 
             }
         });
-
         mnuSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+
                 String htmlText = txtNote.getText();
                 char[] chars = htmlText.toCharArray();
                 byte[] bytes = new byte[chars.length];
@@ -114,7 +129,9 @@ public class TextEditorFormController {
                 }
 
                 try {
+                    if (file1==null)return;
                     String name = file1.getName();
+
                     String[] split = name.split("\\.");
                     String parent = file1.getParent();
                     File file = new File(parent,split[0]+".dep9");
@@ -137,7 +154,6 @@ public class TextEditorFormController {
 
             }
         });
-
         mnuPrint.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -160,6 +176,25 @@ public class TextEditorFormController {
                     new Alert(Alert.AlertType.ERROR,"didn't create a print job").show();
                 }
 
+            }
+        });
+        mnuCopy.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                ClipboardContent clipboardContent = new ClipboardContent();
+                clipboardContent.putString(selectedText);
+                scb.setContent(clipboardContent);
+                selectednotchangetext=selectedText;
+
+            }
+        });
+
+        mnuPaste.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println(selectednotchangetext);
+                int start = txtNote.getSelection().getStart();
+                txtNote.replaceText(start,selectednotchangetext.length(),selectednotchangetext);
             }
         });
 
