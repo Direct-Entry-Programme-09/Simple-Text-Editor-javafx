@@ -24,26 +24,27 @@ public class SplashScreenFormController {
     public Label lblLoading;
 
     public void initialize(){
+
         Timeline timeline = new Timeline();
-        KeyFrame keyFrame1 = new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+        KeyFrame keyFrame1 = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 lblLoading.setText("installing updates...");
             }
         });
-        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 lblLoading.setText("setup id...");
             }
         });
-        KeyFrame keyFrame3 = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
+        KeyFrame keyFrame3 = new KeyFrame(Duration.millis(3500), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 lblLoading.setText("almost their...");
             }
         });
-        KeyFrame keyFrame4 = new KeyFrame(Duration.millis(3000), new EventHandler<ActionEvent>() {
+        KeyFrame keyFrame4 = new KeyFrame(Duration.millis(4000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
@@ -60,5 +61,6 @@ public class SplashScreenFormController {
             }
         });
         timeline.getKeyFrames().addAll(keyFrame1,keyFrame2,keyFrame3,keyFrame4);
+        timeline.playFromStart();
     }
 }

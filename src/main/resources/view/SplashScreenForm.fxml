@@ -6,22 +6,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="383.0" prefWidth="306.0" style="-fx-background-color: rgba(0,0,0,0);" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SplashScreenFormController">
+<AnchorPane prefHeight="442.0" prefWidth="366.0" style="-fx-background-color: rgba(0,0,0,0);" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SplashScreenFormController">
    <children>
-      <ImageView fitHeight="321.0" fitWidth="235.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="369.0" fitWidth="402.0" layoutX="-3.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="/image/th.gif" />
+            <Image url="@../image/ball.gif" />
          </image>
       </ImageView>
-      <AnchorPane layoutX="38.0" layoutY="295.0" prefHeight="71.0" prefWidth="235.0" style="-fx-background-color: rgba(0,0,0,1);">
-         <children>
-            <Label fx:id="lblLoading" layoutX="32.0" layoutY="17.0" text="Loading......." textFill="#1767c9">
-               <font>
-                  <Font size="26.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
+      <Label fx:id="lblLoading" alignment="CENTER" layoutX="85.0" layoutY="324.0" prefHeight="29.0" prefWidth="197.0" style="-fx-background-color: black;" text="Label" textFill="#f5f0f0">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
    </children>
 </AnchorPane>

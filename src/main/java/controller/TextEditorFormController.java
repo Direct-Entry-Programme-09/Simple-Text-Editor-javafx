@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -31,6 +32,7 @@ public class TextEditorFormController {
     public MenuItem mnuPaste;
     public MenuItem mnuSelectAll;
     public MenuItem mnuAbout;
+    public TextArea txtNote;
 
     private File file1;
 
@@ -69,9 +71,10 @@ public class TextEditorFormController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 FileChooser fc = new FileChooser();
-                File file = new File("/home/nipunija/Desktop");
+                File file = new File(System.getProperty("user.home"),"Desktop");
                 fc.setInitialDirectory(file);
                 file1 = fc.showOpenDialog(txtEditor.getScene().getWindow());
+                if (file1==null)return;
                 try {
                     FileInputStream fis = new FileInputStream(file1);
                     BufferedInputStream bfis = new BufferedInputStream(fis);
@@ -80,7 +83,8 @@ public class TextEditorFormController {
                     for (int i = 0; i < file1.length(); i++) {
                         chars[i]= (char) bfis.read();
                     }
-                    txtEditor.setHtmlText(String.valueOf(chars));
+                    txtNote.setText(String.valueOf(chars));
+//                    txtEditor.setHtmlText(String.valueOf(chars));
                     bfis.close();
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
@@ -94,7 +98,7 @@ public class TextEditorFormController {
         mnuSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String htmlText = txtEditor.getHtmlText();
+                String htmlText = txtNote.getText();
                 System.out.println(htmlText);
                 char[] chars = htmlText.toCharArray();
                 byte[] bytes = new byte[chars.length];
@@ -127,7 +131,7 @@ public class TextEditorFormController {
 
                 if (printerJob!=null){
                     printerJob.showPageSetupDialog(txtEditor.getScene().getWindow());
-                    boolean b = printerJob.printPage(txtEditor);
+                    boolean b = printerJob.printPage(txtNote);
                     if (b){
                         printerJob.endJob();
                     }else {
