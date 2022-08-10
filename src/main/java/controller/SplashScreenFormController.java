@@ -29,19 +29,19 @@ public class SplashScreenFormController {
         KeyFrame keyFrame1 = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                lblLoading.setText("installing updates...");
+                lblLoading.setText("Installing updates...");
             }
         });
         KeyFrame keyFrame2 = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                lblLoading.setText("setup id...");
+                lblLoading.setText("Setup UI...");
             }
         });
         KeyFrame keyFrame3 = new KeyFrame(Duration.millis(3500), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                lblLoading.setText("almost their...");
+                lblLoading.setText("Almost their...");
             }
         });
         KeyFrame keyFrame4 = new KeyFrame(Duration.millis(4000), new EventHandler<ActionEvent>() {

@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.*;
 import java.net.URL;
+import java.util.Arrays;
 
 public class TextEditorFormController {
     public HTMLEditor txtEditor;
@@ -57,7 +58,7 @@ public class TextEditorFormController {
         mnuNew.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                txtEditor.setHtmlText("");
+                txtNote.setText("");
             }
         });
         mnClose.setOnAction(new EventHandler<ActionEvent>() {
@@ -75,16 +76,23 @@ public class TextEditorFormController {
                 fc.setInitialDirectory(file);
                 file1 = fc.showOpenDialog(txtEditor.getScene().getWindow());
                 if (file1==null)return;
+                String[] split = file1.getName().split("\\.");
+
                 try {
                     FileInputStream fis = new FileInputStream(file1);
                     BufferedInputStream bfis = new BufferedInputStream(fis);
 
                     char[] chars = new char[(int) file1.length()];
                     for (int i = 0; i < file1.length(); i++) {
-                        chars[i]= (char) bfis.read();
+                        if (split[1].equalsIgnoreCase("dep9")){
+                            int converted = bfis.read() ^ 0b1111_1111;
+                            chars[i]=(char)converted;
+                        }else{
+                            chars[i]= (char) bfis.read();
+                        }
+
                     }
                     txtNote.setText(String.valueOf(chars));
-//                    txtEditor.setHtmlText(String.valueOf(chars));
                     bfis.close();
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
@@ -99,7 +107,6 @@ public class TextEditorFormController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String htmlText = txtNote.getText();
-                System.out.println(htmlText);
                 char[] chars = htmlText.toCharArray();
                 byte[] bytes = new byte[chars.length];
                 for (int i = 0; i < bytes.length; i++) {
@@ -107,10 +114,21 @@ public class TextEditorFormController {
                 }
 
                 try {
-                    FileOutputStream fos = new FileOutputStream(file1);
-                    fos.write(bytes);
-
-                    fos.close();
+                    String name = file1.getName();
+                    String[] split = name.split("\\.");
+                    String parent = file1.getParent();
+                    File file = new File(parent,split[0]+".dep9");
+                    if (!file.exists()){
+                        file.createNewFile();
+                    }
+                    FileOutputStream fos = new FileOutputStream(file);
+                    BufferedOutputStream bfos = new BufferedOutputStream(fos);
+                    byte[] buffer=new byte[bytes.length];
+                    for (int k = 0; k < bytes.length; k++) {
+                        buffer[k] = (byte) (bytes[k] ^ 0b1111_1111);
+                    }
+                    bfos.write(buffer);
+                    bfos.close();
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
